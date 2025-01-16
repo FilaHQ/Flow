@@ -55,7 +55,7 @@ class PostResource extends Resource
                             ),
                         Forms\Components\RichEditor::make("content")
                             ->label("Content")
-                            ->columnspanfull(),
+                            ->columnSpanFull(),
                     ])
                     ->columns([
                         "sm" => 2,
