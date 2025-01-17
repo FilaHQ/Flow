@@ -42,7 +42,7 @@ class TaxonomyResource extends Resource
             Forms\Components\Select::make("type")
                 ->options([
                     "dropdown" => "Dropdown",
-                    "chheckbox" => "Checkbox",
+                    "checkbox" => "Checkbox",
                     "tags" => "Tags",
                 ])
                 ->required(),

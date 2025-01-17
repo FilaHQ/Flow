@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
+use App\Models\Taxonomy;
 use Filament\Forms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -66,6 +67,11 @@ class PostResource extends Resource
                         Forms\Components\DatePicker::make(
                             "published_at"
                         )->label("Publish Date"),
+                        Forms\Components\Fieldset::make("taxonomy")
+                            ->label("Taxonomy")
+                            ->schema(self::getTaxonomy())
+                            ->columns(1),
+
                         Forms\Components\Placeholder::make("created_at")
                             ->label("Created Date")
                             ->content(
@@ -175,5 +181,31 @@ class PostResource extends Resource
         return parent::getEloquentQuery()->withoutGlobalScopes([
             SoftDeletingScope::class,
         ]);
+    }
+
+    public static function getTaxonomy(): array
+    {
+        $taxonomies = Taxonomy::whereHas("terms")->get();
+
+        $fields = [];
+        foreach ($taxonomies as $taxo) {
+            if ($taxo->type == "dropdown") {
+                $fields[] = Forms\Components\Select::make($taxo->name)
+                    ->options($taxo->terms->pluck("name", "id")->toArray())
+                    ->required();
+            }
+            if ($taxo->type == "tags") {
+                $fields[] = Forms\Components\TagsInput::make($taxo->name)
+                    ->suggestions($taxo->terms->pluck("name", "id")->toArray())
+                    ->required();
+            }
+            if ($taxo->type == "checkbox") {
+                $fields[] = Forms\Components\CheckboxList::make($taxo->name)
+                    ->options($taxo->terms->pluck("name", "id")->toArray())
+                    ->required();
+            }
+        }
+
+        return $fields;
     }
 }
