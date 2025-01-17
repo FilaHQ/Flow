@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Builder;
 class Post extends Model
 {
     use SoftDeletes, HasFactory;
@@ -19,6 +19,8 @@ class Post extends Model
         "published_at" => "date",
     ];
 
+    protected $appends = ["link"];
+
     public function scopePublished(Builder $query)
     {
         return $query->whereNotNull("published_at");
@@ -27,5 +29,10 @@ class Post extends Model
     public function scopeDraft(Builder $query)
     {
         return $query->whereNull("published_at");
+    }
+
+    public function getLinkAttribute()
+    {
+        return url($this->slug);
     }
 }

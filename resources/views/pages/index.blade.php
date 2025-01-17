@@ -1,5 +1,7 @@
 <?php
-$posts = \App\Models\Post::orderBy("created_at", "DESC")->paginate(6); ?>
+$posts = \App\Models\Post::published()
+    ->orderBy("created_at", "DESC")
+    ->paginate(6); ?>
 
 <x-layout>
     <div class="bg-white py-24 sm:py-32">
@@ -17,7 +19,7 @@ $posts = \App\Models\Post::orderBy("created_at", "DESC")->paginate(6); ?>
             </div>
             <div class="group relative">
               <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-                <a href="#">
+                <a href="{{ $post->link }}">
                   <span class="absolute inset-0"></span>
                   {{ $post->title}}
                 </a>
