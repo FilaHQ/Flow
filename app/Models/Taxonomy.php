@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Taxonomy extends Model
 {
-    protected $fillable = ["name", "slug", "type", "taxonomy_id"];
+    protected $fillable = ["name", "slug", "type", "taxonomy_id", "options"];
+
+    protected $casts = [
+        "options" => "array",
+    ];
 
     public function terms(): HasMany
     {

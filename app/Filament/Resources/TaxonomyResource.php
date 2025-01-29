@@ -38,7 +38,8 @@ class TaxonomyResource extends Resource
                     }
 
                     $set("slug", Str::slug($state));
-                }),
+                })
+                ->columnSpanFull(),
             Forms\Components\Select::make("type")
                 ->options([
                     "dropdown" => "Dropdown",
@@ -47,6 +48,12 @@ class TaxonomyResource extends Resource
                 ])
                 ->required(),
             Forms\Components\TextInput::make("slug")->required(),
+            Forms\Components\Toggle::make("options.required")->label(
+                "Required Field"
+            ),
+            Forms\Components\Toggle::make("options.route")->label(
+                "Enable Route"
+            ),
         ]);
     }
 
