@@ -13,7 +13,6 @@ return new class extends Migration {
         Schema::create("model_terms", function (Blueprint $table) {
             $table->foreignId("term_id")->constrained()->onDelete("cascade");
             $table->morphs("model");
-            $table->timestamps();
             $table->primary(["term_id", "model_id", "model_type"]);
         });
     }

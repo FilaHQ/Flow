@@ -190,19 +190,22 @@ class PostResource extends Resource
         $fields = [];
         foreach ($taxonomies as $taxo) {
             if ($taxo->type == "dropdown") {
-                $fields[] = Forms\Components\Select::make($taxo->name)
+                $fields[] = Forms\Components\Select::make($taxo->slug)
+                    ->label($taxo->name)
                     ->options($taxo->terms->pluck("name", "id")->toArray())
-                    ->required();
+                    ->required($taxo->options["required"] ?? false);
             }
             if ($taxo->type == "tags") {
-                $fields[] = Forms\Components\TagsInput::make($taxo->name)
+                $fields[] = Forms\Components\TagsInput::make($taxo->slug)
+                    ->label($taxo->name)
                     ->suggestions($taxo->terms->pluck("name", "id")->toArray())
-                    ->required();
+                    ->required($taxo->options["required"] ?? false);
             }
             if ($taxo->type == "checkbox") {
-                $fields[] = Forms\Components\CheckboxList::make($taxo->name)
+                $fields[] = Forms\Components\CheckboxList::make($taxo->slug)
+                    ->label($taxo->name)
                     ->options($taxo->terms->pluck("name", "id")->toArray())
-                    ->required();
+                    ->required($taxo->options["required"] ?? false);
             }
         }
 
