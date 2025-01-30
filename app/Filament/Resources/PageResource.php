@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PostResource\Pages;
-use App\Filament\Resources\PostResource\RelationManagers;
-use App\Models\Post;
-use App\Models\Taxonomy;
+use App\Filament\Resources\PageResource\Pages;
+use App\Filament\Resources\PageResource\RelationManagers;
+use App\Models\Page;
 use Filament\Forms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -17,9 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PostResource extends Resource
+class PageResource extends Resource
 {
-    protected static ?string $model = Post::class;
+    protected static ?string $model = Page::class;
 
     protected static ?string $navigationIcon = "heroicon-o-rectangle-stack";
 
@@ -30,7 +29,7 @@ class PostResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make("title")
-                            ->label("Post Title")
+                            ->label("Page Title")
                             ->required()
                             ->live(debounce: 500)
                             ->afterStateUpdated(function (
@@ -50,7 +49,7 @@ class PostResource extends Resource
                             ->label("Slug")
                             ->required()
                             ->unique(
-                                Post::class,
+                                Page::class,
                                 "slug",
                                 fn($record) => $record
                             ),
@@ -64,25 +63,21 @@ class PostResource extends Resource
                     ->columnSpan(2),
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\DatePicker::make(
-                            "published_at"
-                        )->label("Publish Date"),
-                        Forms\Components\Fieldset::make("taxonomy")
-                            ->label("Taxonomy")
-                            ->schema(self::getTaxonomy())
-                            ->columns(1),
+                        Forms\Components\DatePicker::make("published_at")
+                            ->label("Publish Date")
+                            ->default(now()),
 
                         Forms\Components\Placeholder::make("created_at")
                             ->label("Created Date")
                             ->content(
-                                fn(?Post $record): string => $record
+                                fn(?Page $record): string => $record
                                     ? $record->created_at->diffForHumans()
                                     : "-"
                             ),
                         Forms\Components\Placeholder::make("updated_at")
                             ->label("Last Modified Date")
                             ->content(
-                                fn(?Post $record): string => $record
+                                fn(?Page $record): string => $record
                                     ? $record->updated_at->diffForHumans()
                                     : "-"
                             ),
@@ -158,7 +153,14 @@ class PostResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->isPost());
+            ->modifyQueryUsing(fn(Builder $query) => $query->isPage());
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ]);
     }
 
     public static function getRelations(): array
@@ -171,45 +173,9 @@ class PostResource extends Resource
     public static function getPages(): array
     {
         return [
-            "index" => Pages\ListPosts::route("/"),
-            "create" => Pages\CreatePost::route("/create"),
-            "edit" => Pages\EditPost::route("/{record}/edit"),
+            "index" => Pages\ListPages::route("/"),
+            "create" => Pages\CreatePage::route("/create"),
+            "edit" => Pages\EditPage::route("/{record}/edit"),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->withoutGlobalScopes([
-            SoftDeletingScope::class,
-        ]);
-    }
-
-    public static function getTaxonomy(): array
-    {
-        $taxonomies = Taxonomy::whereHas("terms")->get();
-
-        $fields = [];
-        foreach ($taxonomies as $taxo) {
-            if ($taxo->type == "dropdown") {
-                $fields[] = Forms\Components\Select::make($taxo->slug)
-                    ->label($taxo->name)
-                    ->options($taxo->terms->pluck("name", "id")->toArray())
-                    ->required($taxo->options["required"] ?? false);
-            }
-            if ($taxo->type == "tags") {
-                $fields[] = Forms\Components\TagsInput::make($taxo->slug)
-                    ->label($taxo->name)
-                    ->suggestions($taxo->terms->pluck("name", "id")->toArray())
-                    ->required($taxo->options["required"] ?? false);
-            }
-            if ($taxo->type == "checkbox") {
-                $fields[] = Forms\Components\CheckboxList::make($taxo->slug)
-                    ->label($taxo->name)
-                    ->options($taxo->terms->pluck("name", "id")->toArray())
-                    ->required($taxo->options["required"] ?? false);
-            }
-        }
-
-        return $fields;
     }
 }
