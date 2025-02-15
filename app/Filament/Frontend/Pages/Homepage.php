@@ -9,6 +9,7 @@ use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
 use App\Models\Post;
+use Livewire\WithPagination;
 
 class Homepage extends \Filament\Pages\Dashboard implements
     HasForms,
@@ -16,6 +17,7 @@ class Homepage extends \Filament\Pages\Dashboard implements
 {
     use InteractsWithInfolists;
     use InteractsWithForms;
+    use WithPagination;
 
     protected static ?string $navigationIcon = "heroicon-o-document-text";
 
@@ -25,29 +27,27 @@ class Homepage extends \Filament\Pages\Dashboard implements
 
     protected static bool $shouldRegisterNavigation = false;
 
-    public $record;
-
-    public function mount(Post $record): void
+    public function getTitle(): string
     {
-        $this->record = $record;
+        return config("flow.site.default.name");
     }
 
-    public function content(Infolist $infolist): Infolist
+    public function getHeading(): string
     {
-        // dd($this->record->get()->toArray());
-        return $infolist
-            //->state(["posts" => $this->record->get()->toArray()])
-            ->record($this->record)
-            ->schema([
-                Components\ViewEntry::make("posts")->view("livewire.content"),
-                // Components\RepeatableEntry::make("posts")
-                //     ->schema([
-                //         Components\ViewEntry::make("title")->view(
-                //             "livewire.content"
-                //         ),
-                //     ])
-                //     ->contained(false)
-                //     ->grid(3),
-            ]);
+        return config("flow.site.default.name");
+    }
+
+    public function getSubheading(): ?string
+    {
+        return config("flow.site.default.description");
+    }
+
+    protected function getViewData(): array
+    {
+        return [
+            "posts" => Post::query()->simplePaginate(
+                config("flow.site.default.perpage")
+            ),
+        ];
     }
 }

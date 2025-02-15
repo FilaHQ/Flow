@@ -20,7 +20,7 @@ class Post extends Model
         "published_at" => "date",
     ];
 
-    protected $appends = ["link"];
+    protected $appends = ["url"];
 
     public function scopePublished(Builder $query)
     {
@@ -41,7 +41,7 @@ class Post extends Model
         return $query->whereNull("published_at");
     }
 
-    public function getLinkAttribute()
+    public function getUrlAttribute()
     {
         return url($this->slug);
     }
