@@ -197,9 +197,10 @@ class PostResource extends Resource
                     ->required($taxo->options["required"] ?? false);
             }
             if ($taxo->type == "tags") {
-                $fields[] = Forms\Components\TagsInput::make($taxo->slug)
+                $fields[] = Forms\Components\Select::make($taxo->slug)
                     ->label($taxo->name)
-                    ->suggestions($taxo->terms->pluck("name", "id")->toArray())
+                    ->multiple()
+                    ->options($taxo->terms->pluck("name", "id")->toArray())
                     ->required($taxo->options["required"] ?? false);
             }
             if ($taxo->type == "checkbox") {
