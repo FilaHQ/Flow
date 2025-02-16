@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Term extends Model
 {
@@ -13,7 +14,7 @@ class Term extends Model
 
     public function posts(): MorphToMany
     {
-        return $this->morphedByMany(Post::class, "model_terms");
+        return $this->morphedByMany(Post::class, "model", "model_terms");
     }
 
     public function taxo(): BelongsTo

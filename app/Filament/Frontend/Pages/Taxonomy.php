@@ -11,6 +11,7 @@ use Filament\Infolists\Infolist;
 use App\Models\Taxonomy as TaxonomyModel;
 use App\Models\Term;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Taxonomy extends Page implements HasInfolists
 {
@@ -49,9 +50,7 @@ class Taxonomy extends Page implements HasInfolists
     protected function getViewData(): array
     {
         return [
-            "posts" => Post::taxos()
-                ->where("term_id", $this->term->id)
-                ->simplePaginate(9),
+            "posts" => $this->term->posts()->simplePaginate(9),
         ];
     }
 
