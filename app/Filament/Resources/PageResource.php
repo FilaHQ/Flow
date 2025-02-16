@@ -20,6 +20,8 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
+    protected static ?string $slug = "page";
+
     protected static ?string $navigationIcon = "heroicon-o-rectangle-stack";
 
     public static function form(Form $form): Form
@@ -153,7 +155,7 @@ class PageResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->isPage());
+            ->modifyQueryUsing(fn(Builder $query) => $query->type("page"));
     }
 
     public static function getEloquentQuery(): Builder

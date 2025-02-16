@@ -158,7 +158,7 @@ class PostResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->isPost());
+            ->modifyQueryUsing(fn(Builder $query) => $query->type("post"));
     }
 
     public static function getRelations(): array

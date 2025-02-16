@@ -29,15 +29,10 @@ class Page extends Model
         return $query->whereNotNull("published_at");
     }
 
-    public function scopeIsPage(Builder $query)
+    public function scopeType(Builder $query, string $type)
     {
-        return $query->where("type", "page");
+        return $query->where("type", $type);
     }
-    public function scopeIsPost(Builder $query)
-    {
-        return $query->where("type", "post");
-    }
-
     public function scopeDraft(Builder $query)
     {
         return $query->whereNull("published_at");
