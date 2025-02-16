@@ -3,8 +3,9 @@
 return [
     "site" => [
         "default" => [
-            "name" => "A journal of the Maker Movement",
-            "description" => "A journal of the MakerJournal",
+            "name" => "Flow - Filament Based Content Engine",
+            "description" =>
+                "As a concept CMS that make use of Laravel, Filament",
             "url" => "https://makerjournal.com",
             "perpage" => 5,
         ],
@@ -13,13 +14,17 @@ return [
     "menu" => [
         "default" => [
             "home" => ["label" => "Home", "url" => "/"],
-            "now" => [
-                "label" => "Now",
-                "url" => "/now",
+            "maker" => [
+                "label" => "Build by Knight",
+                "url" => "https://imknight.com",
             ],
-            "makerJournal" => [
-                "label" => "Maker Journal",
-                "url" => "/maker-journal",
+            "filahq" => [
+                "label" => "FilaHQ Product",
+                "url" => "https://filahq.com/",
+            ],
+            "flow" => [
+                "label" => "Source @ GitHub",
+                "url" => "https://github.com/FilaHQ/Flow-Concept",
             ],
         ],
     ],
