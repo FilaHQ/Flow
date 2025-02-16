@@ -19,9 +19,9 @@ class PostFactory extends Factory
         $title = fake()->words(3, true);
         return [
             "title" => $title,
-            "content" => fake()->paragraph(),
+            "content" => fake()->paragraph() . " " . fake()->paragraph(),
             "slug" => trim(\Str::slug($title)),
-            "published_at" => now(),
+            "published_at" => fake()->dateTimeBetween("-3 week", "yesterday"),
         ];
     }
 }
