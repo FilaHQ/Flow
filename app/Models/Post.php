@@ -52,4 +52,13 @@ class Post extends Model
             "term_id"
         );
     }
+
+    public function terms($type)
+    {
+        return $this->taxos()
+            ->whereHas("taxo", function ($query) use ($type) {
+                $query->where("slug", $type);
+            })
+            ->with("taxo"); // Eager load the taxonomy relationship
+    }
 }

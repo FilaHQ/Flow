@@ -45,6 +45,7 @@ class Homepage extends \Filament\Pages\Dashboard implements
         return [
             "posts" => Post::query()
                 ->type("post")
+                ->orderBy("published_at", "desc")
                 ->simplePaginate(config("flow.site.default.perpage")),
         ];
     }

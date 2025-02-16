@@ -9,6 +9,8 @@ class Term extends Model
 {
     protected $fillable = ["name", "slug"];
 
+    protected $appends = ["taxonomy_type", "url"];
+
     public function posts(): MorphToMany
     {
         return $this->morphedByMany(Post::class, "model_terms");
@@ -17,5 +19,15 @@ class Term extends Model
     public function taxo(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, "taxonomy_id", "id");
+    }
+
+    public function getUrlAttribute()
+    {
+        return url($this->taxo->slug . "/" . $this->slug);
+    }
+
+    public function getTaxonomyTypeAttribute(): string
+    {
+        return $this->taxo->slug;
     }
 }
