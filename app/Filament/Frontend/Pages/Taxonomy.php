@@ -50,7 +50,11 @@ class Taxonomy extends Page implements HasInfolists
     protected function getViewData(): array
     {
         return [
-            "posts" => $this->term->posts()->simplePaginate(9),
+            "posts" => $this->term
+                ->posts()
+                ->published()
+                ->orderBy("published_at", "desc")
+                ->simplePaginate(config("flow.site.default.perpage")),
         ];
     }
 
