@@ -11,14 +11,16 @@ return [
     ],
 
     "menu" => [
-        "home" => ["label" => "Home", "url" => "/"],
-        "now" => [
-            "label" => "Now",
-            "url" => "/now",
-        ],
-        "makerJournal" => [
-            "label" => "Maker Journal",
-            "url" => "/maker-journal",
+        "default" => [
+            "home" => ["label" => "Home", "url" => "/"],
+            "now" => [
+                "label" => "Now",
+                "url" => "/now",
+            ],
+            "makerJournal" => [
+                "label" => "Maker Journal",
+                "url" => "/maker-journal",
+            ],
         ],
     ],
 ];
