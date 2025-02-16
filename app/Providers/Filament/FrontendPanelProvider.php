@@ -24,8 +24,9 @@ class FrontendPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $menu = [];
+        $menuconfig = config("flow.menu.default");
 
-        foreach (config("flow.menu.default") as $key => $value) {
+        foreach ($menuconfig as $key => $value) {
             $item = NavigationItem::make($key);
             $item->label($value["label"]);
             $item->url($value["url"]);
