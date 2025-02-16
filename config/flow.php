@@ -9,17 +9,16 @@ return [
             "perpage" => 5,
         ],
     ],
-    "navigation" => [
-        "menu" => [
-            "home" => ["label" => "Home", "url" => "/"],
-            "now" => [
-                "label" => "Now",
-                "url" => "/now",
-            ],
-            "makerJournal2024" => [
-                "label" => "Maker Journal 2024",
-                "url" => "/maker-journal-2024",
-            ],
+
+    "menu" => [
+        "home" => ["label" => "Home", "url" => "/"],
+        "now" => [
+            "label" => "Now",
+            "url" => "/now",
+        ],
+        "makerJournal" => [
+            "label" => "Maker Journal",
+            "url" => "/maker-journal",
         ],
     ],
 ];

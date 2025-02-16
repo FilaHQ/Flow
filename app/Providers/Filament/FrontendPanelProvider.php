@@ -17,11 +17,24 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationItem;
 
 class FrontendPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $menu = [];
+
+        foreach (config("flow.menu") as $key => $value) {
+            $item = NavigationItem::make($key);
+            $item->label($value["label"]);
+            $item->url($value["url"]);
+            $item->isActiveWhen(
+                fn() => request()->is(substr($value["url"], 1))
+            );
+            $menu[] = $item;
+        }
+
         return $panel
             ->id("frontend")
             ->path("/")
@@ -56,6 +69,7 @@ class FrontendPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->navigationItems($menu)
             ->topNavigation();
     }
 }
