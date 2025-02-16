@@ -21,9 +21,7 @@ class Homepage extends \Filament\Pages\Dashboard implements
 
     protected static ?string $navigationIcon = "heroicon-o-document-text";
 
-    protected static string $view = "filament.frontend.pages.homepage";
-
-    protected static ?string $title = 'I\'m Knight';
+    protected static string $view = "filament.frontend.pages.listing";
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -45,9 +43,9 @@ class Homepage extends \Filament\Pages\Dashboard implements
     protected function getViewData(): array
     {
         return [
-            "posts" => Post::query()->simplePaginate(
-                config("flow.site.default.perpage")
-            ),
+            "posts" => Post::query()
+                ->type("post")
+                ->simplePaginate(config("flow.site.default.perpage")),
         ];
     }
 }

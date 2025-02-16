@@ -27,13 +27,9 @@ class Post extends Model
         return $query->whereNotNull("published_at");
     }
 
-    public function scopeIsPage(Builder $query)
+    public function scopeType(Builder $query, $type)
     {
-        return $query->where("type", "page");
-    }
-    public function scopeIsPost(Builder $query)
-    {
-        return $query->where("type", "post");
+        return $query->where("type", $type);
     }
 
     public function scopeDraft(Builder $query)
